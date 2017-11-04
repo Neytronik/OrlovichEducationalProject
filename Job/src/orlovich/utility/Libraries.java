@@ -1,7 +1,9 @@
 package orlovich.utility;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Libraries {
@@ -9,31 +11,35 @@ public class Libraries {
     private static PointSubMatrix inicialPoint;
     private static PointSubMatrix endPoint;
 
-    private Libraries() {
-    }
+    private Libraries() {}
+
 //                subMatrixCoordinate Example
 //          ___________________________________
 //         |__|__|xy||||||||||||||||__|__|__|__| inicialPoint
 //         |__|__||||__|__|__|__||||__|__|__|__| coordinate diagonal SubMatrix
 //         |__|__||||||||||||||||XY|__|__|__|__| endPoint
 
-
     //проверка алгоритма
     public static void main(String[] args) {
-        int[] a = {1, 2, 3, -4};
-        int[][] b = {{1, 2, 3, -4}, {0, -7, 11, -9}, {0, 0, -29, 0}, {0, -8, 0}};
-        int[][] c = {{1, 2, 3, -4}, {0, -7, 11, -9}, {0, 0, -29, 0}, {0, -8, 0, 9}};
-        System.out.println(majorAlgorithm(a));
-        System.out.println(majorAlgorithm(b));
-        System.out.println(majorAlgorithm(c));
+//        int[] a = {1, 2, 3, -4};
+//        int[][] b = {{1, 2, 3, -4}, {0, -7, 11, -9}, {0, 0, -29, 0}, {0, -8, 0}};
+//        int[][] c = {{1, 2, 3, -4}, {0, -7, 11, -9}, {0, 0, -29, 0}, {0, -8, 0, 9}};
+//        System.out.println(majorAlgorithm(a));
+//        System.out.println(majorAlgorithm(b));
+//        System.out.println(majorAlgorithm(c));
+
+        Scanner scanner = new Scanner(System.in);
+
+        scannerDigitToArray(scanner);
+
     }
 
     private static boolean validateArray(int[]... array) {
         if (array == null && array.length == 0) return false;       //throw new NullPointerException();
         if (array.length == 1) return true;
         int lengthFirstArray = array[0].length;
-        for (int i = 1; i < array.length - 1; i++) {
-            if (array[i].length == array[i + 1].length) continue; // проверяется прямоугольность матрицы
+        for (int i = 1; i < array.length; i++) {
+            if (array[i].length != lengthFirstArray) // проверяется прямоугольность матрицы
             return false;
         }
 
@@ -70,7 +76,6 @@ public class Libraries {
                 + "with coordinates diagonal: " + inicialPoint + "and" + endPoint);
     }
 
-
     private static class PointSubMatrix {
         int x;
         int y;
@@ -96,8 +101,34 @@ public class Libraries {
         if (file.isDirectory()) {
             System.out.println("Please enter the full path to the matrix file in the format /path_Folder/file_Matrix.txt");
         } else if (file.isFile()) {
+
+
             // parsing file
+
+
+
         } else System.out.println("Please enter the full path to the matrix file");
+
+    }
+
+    public static void scannerDigitToArray(Scanner scan) {
+
+        ArrayList<int[]> arrays = new ArrayList<>();
+        String line;
+        while (scan.hasNextLine()) {
+            if ((line = scan.nextLine()).equals("")) {
+                break;
+            }
+            int[] numArr;
+            try {
+                numArr = Arrays.stream(line.split(" ")).mapToInt(Integer::parseInt).toArray();
+                arrays.add(numArr);
+            } catch (NumberFormatException e) {
+                System.out.println("NumerFormatExeption in line: "+line +"\n"
+                                    + "re-enter line");
+            }
+        }
+        System.out.println(arrays.toString()); //delete
 
     }
 }

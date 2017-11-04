@@ -1,17 +1,18 @@
 package orlovich.utility;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Libraries {
+public final class Libraries {
 
     private static PointSubMatrix inicialPoint;
     private static PointSubMatrix endPoint;
 
-    private Libraries() {}
+    private Libraries() {
+    }
 
 //                subMatrixCoordinate Example
 //          ___________________________________
@@ -40,7 +41,7 @@ public class Libraries {
         int lengthFirstArray = array[0].length;
         for (int i = 1; i < array.length; i++) {
             if (array[i].length != lengthFirstArray) // проверяется прямоугольность матрицы
-            return false;
+                return false;
         }
 
         return true;
@@ -62,8 +63,11 @@ public class Libraries {
                         lineSum += a[line][column];
                         currentSum = lineSum + cache[column];
                         cache[column] = currentSum;
-                        if (currentSum > maxSum) {
+                        if (currentSum > maxSum && !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1))) {
                             maxSum = currentSum;
+                            // если вся матрица положительные числа то вернет всю матрицу,для чисто подматрицы добавить условие
+                            //  && !((startLine == 0 && line == M-1) &&(startColumn == 0 && column == 0))
+                            // если вся матрица это частный случай подматрицы то условие можно убрать, но не думаю
                             inicialPoint = new PointSubMatrix(startColumn, startLine);
                             endPoint = new PointSubMatrix(column, line);
                         }
@@ -91,29 +95,7 @@ public class Libraries {
         }
     }
 
-    public static void scannerFileToArray(Scanner scan) {
-
-        ArrayList<int[]> arrays = new ArrayList<>();
-
-        String path = scan.nextLine();
-        File file = new File(path);
-
-        if (file.isDirectory()) {
-            System.out.println("Please enter the full path to the matrix file in the format /path_Folder/file_Matrix.txt");
-        } else if (file.isFile()) {
-
-
-            // parsing file
-
-
-
-        } else System.out.println("Please enter the full path to the matrix file");
-
-    }
-
-    public static void scannerDigitToArray(Scanner scan) {
-
-        ArrayList<int[]> arrays = new ArrayList<>();
+    public static void readLineMatrix(Scanner scan,ArrayList<int[]> arrays) {
         String line;
         while (scan.hasNextLine()) {
             if ((line = scan.nextLine()).equals("")) {
@@ -124,12 +106,42 @@ public class Libraries {
                 numArr = Arrays.stream(line.split(" ")).mapToInt(Integer::parseInt).toArray();
                 arrays.add(numArr);
             } catch (NumberFormatException e) {
-                System.out.println("NumerFormatExeption in line: "+line +"\n"
-                                    + "re-enter line");
+                System.out.println("NumerFormatExeption in line: " + line + "\n"
+                        + "re-enter line");
             }
         }
-        System.out.println(arrays.toString()); //delete
+    }
 
+    public static int[][] scannerFileToArray(Scanner scan) {
+
+        String path = scan.nextLine();
+        File file = new File(path);
+        ArrayList<int[]> arrays = new ArrayList<>();
+        if (file.isDirectory()) {
+            System.out.println("Please enter the full path to the matrix file in the format /path_Folder/file_Matrix.txt");
+        } else if (file.isFile()) {
+            try {
+                scan = new Scanner(file);
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found!!!");
+            }
+            readLineMatrix(scan,arrays);
+        } else System.out.println("Please enter the full path to the matrix file");
+        return listToArray(arrays);
+    }
+
+    public static int[][] scannerDigitToArray(Scanner scan) {
+        ArrayList<int[]> arrays = new ArrayList<>();
+        readLineMatrix(scan,arrays);
+        return listToArray(arrays);
+    }
+
+    private static int[][] listToArray(ArrayList<int[]> list) {
+        int[][] arr = new int[list.size()][];
+        for (int i = 0; i < list.size(); i++) {
+            arr[i] = list.get(i);
+        }
+        return arr;
     }
 }
 

@@ -25,7 +25,6 @@ public class OpenConsole {
             pb = new ProcessBuilder("cmd.exe", "/C", "start");
         }
         pb.start();
-        System.out.println("hello");
 
     }
 

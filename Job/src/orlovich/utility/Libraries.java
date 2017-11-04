@@ -1,7 +1,5 @@
 package orlovich.utility;
 
-import java.awt.*;
-
 public class Libraries {
 
     private static PointSubMatrix inicialPoint;
@@ -11,20 +9,22 @@ public class Libraries {
     }
 //                subMatrixCoordinate Example
 //          ___________________________________
-//         |__|__|x1|__|__|__|__|y1|__|__|__|__| inicialPoint
-//         |__|__|__|__|__|__|__|__|__|__|__|__|
-//         |__|__|x2|__|__|__|__|y2|__|__|__|__| endPoint
-
+//         |__|__|xy||||||||||||||||__|__|__|__| inicialPoint
+//         |__|__||||__|__|__|__||||__|__|__|__| coordinate diagonal SubMatrix
+//         |__|__||||||||||||||||XY|__|__|__|__| endPoint
 
 
     //проверка алгоритма
     public static void main(String[] args) {
-        int[][] a = {{1, 2, 3, -4}, {0, -7, 11, -9}, {0, 0, -29, 0}, {0, -8, 0, -29}};
+        int[] a = {1, 2, 3, -4};
+        int[][] b = {{1, 2, 3, -4}, {0, -7, 11, -9}, {0, 0, -29, 0}, {0, -8, 0}};
+        int[][] c = {{1, 2, 3, -4}, {0, -7, 11, -9}, {0, 0, -29, 0}, {0, -8, 0, 9}};
         System.out.println(majorAlgorithm(a));
-
+        System.out.println(majorAlgorithm(b));
+        System.out.println(majorAlgorithm(c));
     }
 
-    private static boolean validateArray(int[][] array) {
+    private static boolean validateArray(int[]... array) {
         if (array == null && array.length == 0) return false;       //throw new NullPointerException();
         if (array.length == 1) return true;
         int lengthFirstArray = array[0].length;
@@ -36,13 +36,13 @@ public class Libraries {
         return true;
     }
 
-    public static String majorAlgorithm(int[][] a) {
+    public static String majorAlgorithm(int[]... a) {
         int maxSum = 0;
         if (!validateArray(a)) return "This matrix isn't corectly";
-        final int M = a.length;
-        final int N = a[0].length;  //size matrix
+        final int M = a.length;   //vertical
+        final int N = a[0].length;  //horisontal size matrix
 
-        for (int startLine = 0; startLine < a.length; startLine++) {
+        for (int startLine = 0; startLine < M; startLine++) {
             for (int startColumn = 0; startColumn < N; startColumn++) {
                 int[] cache = new int[N];
                 for (int line = startLine; line < M; line++) {
@@ -52,28 +52,38 @@ public class Libraries {
                         lineSum += a[line][column];
                         currentSum = lineSum + cache[column];
                         cache[column] = currentSum;
-                        if (currentSum > maxSum){
+                        if (currentSum > maxSum) {
                             maxSum = currentSum;
                             inicialPoint = new PointSubMatrix(startColumn, startLine);
-                            endPoint = new PointSubMatrix(column,line);
-
+                            endPoint = new PointSubMatrix(column, line);
                         }
                     }
                 }
             }
         }
 
-        return String.valueOf("Submatrix having the greatest sum of elements is equal to: "+ maxSum +"\n"
-                                +"with coordinates: "+inicialPoint +" " + endPoint );
+        return String.valueOf("Submatrix having the greatest sum of elements is equal to: " + maxSum + "\n"
+                + "with coordinates diagonal: " + inicialPoint + "and" + endPoint);
     }
 
 
-    private static class PointSubMatrix extends Point {
-        PointSubMatrix(int x, int y) {
-            super(x, y);
+    private static class PointSubMatrix {
+        int x;
+        int y;
+
+        public PointSubMatrix(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
 
+        @Override
+        public String toString() {
+            return "[x=" + x + ", y=" + y + "]";
+        }
     }
+
+
 }
+
 
 

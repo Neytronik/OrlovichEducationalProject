@@ -20,7 +20,6 @@ public final class Libraries {
 //         |__|__||||__|__|__|__||||__|__|__|__| coordinate diagonal SubMatrix
 //         |__|__||||||||||||||||XY|__|__|__|__| endPoint
 
-    //проверка алгоритма
     public static void main(String[] args) {
 //        int[] a = {1, 2, 3, -4};
 //        int[][] b = {{1, 2, 3, -4}, {0, -7, 11, -9}, {0, 0, -29, 0}, {0, -8, 0}};

@@ -37,8 +37,8 @@ public class Main {
                     break;
                 case "EXIT":
                     System.exit(0);
-//                default:
-//                    System.out.println("command not supported");
+                default:
+                    System.out.println("command not supported");
             }
         }
     }

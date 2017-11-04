@@ -1,5 +1,9 @@
 package orlovich.utility;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Libraries {
 
     private static PointSubMatrix inicialPoint;
@@ -82,7 +86,20 @@ public class Libraries {
         }
     }
 
+    public static void scannerFileToArray(Scanner scan) {
 
+        ArrayList<int[]> arrays = new ArrayList<>();
+
+        String path = scan.nextLine();
+        File file = new File(path);
+
+        if (file.isDirectory()) {
+            System.out.println("Please enter the full path to the matrix file in the format /path_Folder/file_Matrix.txt");
+        } else if (file.isFile()) {
+            // parsing file
+        } else System.out.println("Please enter the full path to the matrix file");
+
+    }
 }
 
 

@@ -16,7 +16,7 @@ public class Main {
 
         int[][] a = null;
         while (true) {
-            switch (scanner.next().toUpperCase()) {       //toUpperCase для исключения ошибок регистра при вводе
+            switch (scanner.nextLine().toUpperCase().trim()) {       //toUpperCase для исключения ошибок регистра при вводе
 
                 case "P":
                 case "PATH":

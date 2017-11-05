@@ -7,17 +7,12 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 
-/**                subMatrixCoordinate Example
- *          ___________________________________
- *         |__|__|xy||||||||||||||||__|__|__|__| inicialPoint
- *         |__|__||||__|__|__|__||||__|__|__|__| coordinate diagonal SubMatrix
- *         |__|__||||||||||||||||XY|__|__|__|__| endPoint
- *
- *
- *
- *
- *
- *
+/**
+ * subMatrixCoordinate Example
+ * ___________________________________
+ * |__|__|xy||||||||||||||||__|__|__|__| inicialPoint
+ * |__|__||||__|__|__|__||||__|__|__|__| coordinate diagonal SubMatrix
+ * |__|__||||||||||||||||XY|__|__|__|__| endPoint
  */
 
 public final class Libraries {
@@ -32,6 +27,7 @@ public final class Libraries {
      */
     private static PointSubMatrix inicialPoint;
     private static PointSubMatrix endPoint;
+
     /**
      * Don't let anyone instantiate this class.
      */
@@ -57,7 +53,7 @@ public final class Libraries {
          * the field retains the largest sum of submatrix elements
          */
         int maxSum = 0;
-        if (!validateArray(a)) return "This matrix isn't corectly! \nEnter \"D\" and the correct matrix size of M on N";
+        if (!validateArray(a)) return "This matrix isn't corectly! \nEnter the correct matrix size of M on N";
 
         /**
          * field M is vertical length of matrix
@@ -81,7 +77,7 @@ public final class Libraries {
                         if (currentSum > maxSum && !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1))) {
                             maxSum = currentSum;
                             // если вся матрица положительные числа то вернет всю матрицу,для чисто подматрицы добавить условие
-                            //  && !((startLine == 0 && line == M-1) &&(startColumn == 0 && column == 0))
+                            //  && !((startLine == 0 && line == M-1) &&(startColumn == 0 && column == N-1))
                             // если вся матрица это частный случай подматрицы то условие можно убрать, но не думаю
                             inicialPoint = new PointSubMatrix(startColumn, startLine);
                             endPoint = new PointSubMatrix(column, line);
@@ -113,7 +109,7 @@ public final class Libraries {
     public static void readLineMatrix(Scanner scan, ArrayList<int[]> arrays) {
         String line;
         while (scan.hasNextLine()) {
-            if ((line = scan.nextLine()).equals("") ) {
+            if ((line = scan.nextLine()).equals("")) {
                 break;
             }
             int[] numArr;
@@ -130,18 +126,16 @@ public final class Libraries {
     public static int[][] scannerFileToArray(Scanner scan) {
 
         String path = scan.nextLine();
-        File file = new File(path);
+        File file= new File(path);
         ArrayList<int[]> arrays = new ArrayList<>();
-        if (file.isDirectory()) {
-            System.out.println("Please enter the full path to the matrix file in the format /path_Folder/file_Matrix.txt");
-        } else if (file.isFile()) {
+        if (file.isFile()) {
             try {
                 scan = new Scanner(file);
             } catch (FileNotFoundException e) {
                 System.out.println("File not found!!!");
             }
             readLineMatrix(scan, arrays);
-        } else System.out.println("Please enter the full path to the matrix file");
+        } else throw new IllegalArgumentException();
         return listToArray(arrays);
     }
 

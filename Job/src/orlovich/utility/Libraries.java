@@ -76,9 +76,6 @@ public final class Libraries {
                         cache[column] = currentSum;
                         if (currentSum > maxSum && !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1))) {
                             maxSum = currentSum;
-                            // если вся матрица положительные числа то вернет всю матрицу,для чисто подматрицы добавить условие
-                            //  && !((startLine == 0 && line == M-1) &&(startColumn == 0 && column == N-1))
-                            // если вся матрица это частный случай подматрицы то условие можно убрать, но не думаю
                             inicialPoint = new PointSubMatrix(startColumn, startLine);
                             endPoint = new PointSubMatrix(column, line);
                         }

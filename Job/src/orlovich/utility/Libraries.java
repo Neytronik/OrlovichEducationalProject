@@ -74,7 +74,8 @@ public final class Libraries {
                         lineSum += a[line][column];
                         currentSum = lineSum + cache[column];
                         cache[column] = currentSum;
-                        if (currentSum > maxSum && !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1))) {
+                        if (currentSum > maxSum && ((startLine == line && startColumn == column) ||
+                                !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1)))) {
                             maxSum = currentSum;
                             inicialPoint = new PointSubMatrix(startColumn, startLine);
                             endPoint = new PointSubMatrix(column, line);

@@ -13,14 +13,22 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
-            <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
         <finalName>Orlovich-Matrix</finalName>
         <sourceDirectory>src/orlovich</sourceDirectory>
+        <plugins>
+            <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.9</source>
+                <target>1.9</target>
+            </configuration>
+        </plugin>
+        </plugins>
     </build>
-
 
 </project>

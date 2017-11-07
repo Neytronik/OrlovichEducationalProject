@@ -1,4 +1,8 @@
 package test.testUtility;
 
-public class TestUtilLibraties {
+import junit.framework.TestResult;
+
+public class TestUtilLibraties extends junit.framework.Assert {
+
+
 }

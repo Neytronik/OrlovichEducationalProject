@@ -8,13 +8,23 @@ import java.util.Scanner;
 
 
 /**
- * subMatrixCoordinate Example
- * ___________________________________
- * |__|__|xy||||||||||||||||__|__|__|__| inicialPoint
- * |__|__||||__|__|__|__||||__|__|__|__| coordinate diagonal SubMatrix
- * |__|__||||||||||||||||XY|__|__|__|__| endPoint
+ * <p> The {@code Libraries} class contains a chain
+ * of dependent methods to find the maximum sum of submatrix
+ * elements in the matrix.
+ * <p>Reading methods allow you to perform calculations
+ * both from a file and after manually entering an array of numbers
+ * The result of the class is the use of the search
+ * algorithm {@code majorAlgorithm} and return coordinate diagonal SubMatrix  </p>
+ * <p>
+ * <p>subMatrixCoordinate Example</p>
+ * <p> ___________________________________</p>
+ * <p>|__|__|xy||||||||||||||||__|__|__|__| inicialPoint</p>
+ * <p>|__|__||||__|__|__|__||||__|__|__|__| coordinate diagonal SubMatrix</p>
+ * <p>|__|__||||||||||||||||XY|__|__|__|__| endPoint</p>
+ *
+ * @author Orlovich Artem
+ * @version 1.0
  */
-
 public final class Libraries {
 
     /**
@@ -34,17 +44,31 @@ public final class Libraries {
     private Libraries() {
     }
 
-    private static boolean validateArray(int[]... array) {
-        if (array == null || array.length == 0) return false;       //throw new NullPointerException();
+    /**
+     * <p> Accepts a two-dimensional matrix array </p>
+     * <p> Returns "true" if the matrix is ​​suitable for calculating the submatrix. </p>
+     * Cases:
+     * <ul> <li> If the null reference
+     * result is false.
+     * <li> If the passed array has a length of zero
+     * result is false.
+     * <li> If the transferred array has different lengths of subarrays
+     * result is false.
+     * </ul>
+     *
+     * @param array is two-dimensional array of integer values ​​(int [] []).
+     * @return boolean.
+     */
+    public static boolean validateArray(int[]... array) {
+        if (array == null || array.length == 0) return false;
         if (array.length == 1) return true;
         else {
             int lengthFirstArray = array[0].length;
             for (int i = 1; i < array.length; i++) {
-                if (array[i].length != lengthFirstArray) // проверяется прямоугольность матрицы
+                if (array[i].length != lengthFirstArray)
                     return false;
             }
         }
-
         return true;
     }
 
@@ -89,7 +113,13 @@ public final class Libraries {
                 + "with coordinates diagonal: " + inicialPoint + " and " + endPoint);
     }
 
-    private static class PointSubMatrix {
+    /**
+     * <p>Nested class {@code PointSumMatrix} expresses
+     * the abstraction of the two-dimensional
+     * representation of the submatrix in the
+     * plane with its coordinates</p>
+     */
+    public static final class PointSubMatrix {
         int x;
         int y;
 
@@ -124,7 +154,7 @@ public final class Libraries {
     public static int[][] scannerFileToArray(Scanner scan) {
 
         String path = scan.nextLine();
-        File file= new File(path);
+        File file = new File(path);
         ArrayList<int[]> arrays = new ArrayList<>();
         if (file.isFile()) {
             try {
@@ -142,6 +172,7 @@ public final class Libraries {
         readLineMatrix(scan, arrays);
         return listToArray(arrays);
     }
+
 
     private static int[][] listToArray(ArrayList<int[]> list) {
         int[][] arr = new int[list.size()][];

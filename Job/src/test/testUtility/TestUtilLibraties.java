@@ -1,4 +1,4 @@
-package orlovich.testing;
+package test.testUtility;
 
 public class TestUtilLibraties {
 }

@@ -2,30 +2,27 @@ package orlovich.console;
 
 import java.util.Scanner;
 
-import static orlovich.utility.Libraries.majorAlgorithm;
-import static orlovich.utility.Libraries.scannerDigitToArray;
-import static orlovich.utility.Libraries.scannerFileToArray;
+import static orlovich.utility.Libraries.*;
 
 /**
  * this class is Singleton
  */
-public class ConsoleDialog {
+public final class ConsoleDialog {
 
-    private static ConsoleDialog cd = new ConsoleDialog();
+    private final static ConsoleDialog cd = new ConsoleDialog();
+
     public static ConsoleDialog getDialog() {
         return cd;
     }
 
     private ConsoleDialog() {
         System.out.println("To calculate the submatrix, enter\n" +
-                        "   \"P\" or \"Path\"       to calculate the submatrix from a file\n"+
-                        "   \"D\" or \"Digit\"      to enter the matrix manually\n" +
-                        "   \"HELP\"              for a full list commands\n" +
-                        "   \"EXIT\"              to quit the aplication");
+                "   \"P\" or \"Path\"       to calculate the submatrix from a file\n" +
+                "   \"D\" or \"Digit\"      to enter the matrix manually\n" +
+                "   \"HELP\"              for a full list commands\n" +
+                "   \"EXIT\"              to quit the aplication");
 
         Scanner scanner = new Scanner(System.in);
-
-        int[][] a = null;
         while (true) {
             switch (scanner.nextLine().toUpperCase().trim()) {       //toUpperCase для исключения ошибок регистра при вводе
                 case "P":
@@ -51,8 +48,8 @@ public class ConsoleDialog {
                     System.out.println(subMatrix + "\n");
                     break;
                 case "HELP":
-                    System.out.println("USAGE: \n" +
-                            "This program only works with the correct rectangular matrix size M on N\n\n" +
+                    System.out.println("USAGE: " +
+                            "This program only works with the correct rectangular matrix size M on N\n\nEnter:\n" +
                             "\"P\" or \"PATH\"       - to calculate the submatrix from a file\n" +
                             "                          enter the full file name in the form :\n" +
                             "                         \\full_path_folder\\file_name.txt\n\n" +

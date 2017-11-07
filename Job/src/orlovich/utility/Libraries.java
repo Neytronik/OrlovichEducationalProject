@@ -54,6 +54,7 @@ public final class Libraries {
      * result is false.
      * <li> If the transferred array has different lengths of subarrays
      * result is false.
+     *
      * </ul>
      *
      * @param array is two-dimensional array of integer values ​​(int [] []).

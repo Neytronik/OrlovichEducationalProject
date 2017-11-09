@@ -20,25 +20,18 @@ import static orlovich.utility.Libraries.*;
 public final class ConsoleDialog {
 
     /**
-     * Field the only instance of the console dialog
-     */
-    private final static ConsoleDialog cd = new ConsoleDialog();
-
-    /**
-     * Metod returned singleton {@code ConsoleDialog}
+     * <p>Metod returned new instanse  {@code ConsoleDialog}</p>
      *
      * @return instanse ConsoleDialog
      */
     public static ConsoleDialog getDialog() {
-        return cd;
+        return new ConsoleDialog();
     }
 
-    /**
-     * A private constructor, along with a static instance,
-     * makes this design single-use, it is possible
-     * to use it again after restarting the program
-     */
     private ConsoleDialog() {
+    }
+
+    public void start() {
 
         System.out.println("To calculate the submatrix, enter\n" +
                 "   \"P\" or \"Path\"       to calculate the submatrix from a file\n" +
@@ -56,19 +49,24 @@ public final class ConsoleDialog {
                     int[][] scanArray;
                     try {
                         scanArray = scannerFileToArray(scanPath);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Incorrect line in Matrix. ");
+                        continue;
+
                     } catch (IllegalArgumentException i) {
                         System.out.println("Incorrect path the file!!! Retry the operation...\n" +
                                 "Enter HELP for a full list commands or EXIT to quit the aplication");
                         continue;
                     }
-                    String subMatrixFile = majorAlgorithm(scanArray);
+
+                    String subMatrixFile = maxSumAlgorithm(scanArray);
                     System.out.println(subMatrixFile + "\n");
                     break;
                 case "D":
                 case "DIGIT":
                     System.out.println("enter the numbers of matrix N1 N2 N3 ... Nn ->enter-> M1 M2 M3 ... Mn");
                     Scanner scan = new Scanner(System.in);
-                    String subMatrix = majorAlgorithm(scannerDigitToArray(scan));
+                    String subMatrix = maxSumAlgorithm(scannerDigitToArray(scan));
                     System.out.println(subMatrix + "\n");
                     break;
                 case "HELP":
@@ -89,11 +87,13 @@ public final class ConsoleDialog {
                     System.out.println("Use command HELP");
                     break;
                 case "EXIT":
+                    scanner.close();
                     System.exit(0);
                 default:
                     System.out.println("command not supported");
             }
         }
     }
+
 }
 

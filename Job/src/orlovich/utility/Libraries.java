@@ -4,17 +4,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 
 /**
  * <p> The {@code Libraries} class contains a chain
- * of dependent methods to find the maximum sum of submatrix
+ * of dependent methods to find the maximum or minimum sum of submatrix
  * elements in the matrix.
  * <p>Reading methods allow you to perform calculations
  * both from a file and after manually entering an array of numbers
  * The result of the class is the use of the search
- * algorithm {@code majorAlgorithm} and return coordinate diagonal SubMatrix  </p>
+ * algorithm {@code maxSumAlgorithm} or {@code minSumAlgorithm}  and return coordinate diagonal SubMatrix  </p>
  * <p>
  * <p>subMatrixCoordinate Example</p>
  * <p> ___________________________________</p>
@@ -28,14 +29,12 @@ import java.util.Scanner;
 public final class Libraries {
 
     /**
-     *
-     *
-     *
-     *
-     *
-     *
+     * The field {@code inicialPoint} is first point of diadonal subMatrix
      */
     private static PointSubMatrix inicialPoint;
+    /**
+     * The field {@code endPoint} is second point of diadonal subMatrix
+     */
     private static PointSubMatrix endPoint;
 
     /**
@@ -54,7 +53,6 @@ public final class Libraries {
      * result is false.
      * <li> If the transferred array has different lengths of subarrays
      * result is false.
-     *
      * </ul>
      *
      * @param array is two-dimensional array of integer values ​​(int [] []).
@@ -73,7 +71,8 @@ public final class Libraries {
         return true;
     }
 
-    public static String majorAlgorithm(int[]... a) {
+
+    public static String maxSumAlgorithm(int[]... a) {
         /**
          * the field retains the largest sum of submatrix elements
          */
@@ -114,6 +113,48 @@ public final class Libraries {
                 + "with coordinates diagonal: " + inicialPoint + " and " + endPoint);
     }
 
+    public static String minSumAlgorithm(int[]... a) {
+        /**
+         * the field retains the largest sum of submatrix elements
+         */
+        int minSum = 0;
+        if (!validateArray(a)) return "This matrix isn't corectly! \nEnter the correct matrix size of M on N";
+
+        /**
+         * field M is vertical length of matrix
+         */
+        final int M = a.length;
+        /**
+         * field N is horisontal length of matrix
+         */
+        final int N = a[0].length;
+
+        for (int startLine = 0; startLine < M; startLine++) {
+            for (int startColumn = 0; startColumn < N; startColumn++) {
+                int[] cache = new int[N];
+                for (int line = startLine; line < M; line++) {
+                    int currentSum = 0;
+                    int lineSum = 0;
+                    for (int column = startColumn; column < N; column++) {
+                        lineSum += a[line][column];
+                        currentSum = lineSum + cache[column];
+                        cache[column] = currentSum;
+                        if (currentSum < minSum && ((startLine == line && startColumn == column) ||
+                                !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1)))) {
+                            minSum = currentSum;
+                            inicialPoint = new PointSubMatrix(startColumn, startLine);
+                            endPoint = new PointSubMatrix(column, line);
+                        }
+                    }
+                }
+            }
+        }
+
+        return String.valueOf("Submatrix having the minimal sum of elements is equal to: " + minSum + "\n"
+                + "with coordinates diagonal: " + inicialPoint + " and " + endPoint);
+    }
+
+
     /**
      * <p>Nested class {@code PointSumMatrix} expresses
      * the abstraction of the two-dimensional
@@ -129,13 +170,21 @@ public final class Libraries {
             this.y = y;
         }
 
-        @Override
         public String toString() {
             return "[x=" + x + ", y=" + y + "]";
         }
     }
 
-    public static void readLineMatrix(Scanner scan, ArrayList<int[]> arrays) {
+    /**
+     * <p>This method reads and parses the string to integers and
+     * writes this string to the collection of integer arrays passed in the parameters.</p>
+     * <p>If the reading occurs from the file, if there are illegal characters
+     * or an empty string, the Exception NumberFormatException is thrown</p>
+     * @param scan   is {@code java.util.Scanner}
+     * @param arrays is {@code List<int[]>}
+     * @throws NumberFormatException()
+     */
+    private static void readLineMatrix(Scanner scan, List<int[]> arrays, boolean readFile) {
         String line;
         while (scan.hasNextLine()) {
             if ((line = scan.nextLine()).equals("")) {
@@ -146,36 +195,45 @@ public final class Libraries {
                 numArr = Arrays.stream(line.split(" ")).mapToInt(Integer::parseInt).toArray();
                 arrays.add(numArr);
             } catch (NumberFormatException e) {
-                System.out.println("NumberFormatExeption in line: " + line + "\n"
+                System.out.println("NumberFormatExeption in line: " + line + "\n"  //что если из файла? - бесконечный ввод
                         + "re-enter line");
+                if (readFile) throw new NumberFormatException();
             }
         }
     }
+
 
     public static int[][] scannerFileToArray(Scanner scan) {
 
         String path = scan.nextLine();
         File file = new File(path);
-        ArrayList<int[]> arrays = new ArrayList<>();
+        List<int[]> arrays = new ArrayList<>();
         if (file.isFile()) {
             try {
                 scan = new Scanner(file);
             } catch (FileNotFoundException e) {
                 System.out.println("File not found!!!");
             }
-            readLineMatrix(scan, arrays);
+            readLineMatrix(scan, arrays, true);  //throw NumberFormatExeption
         } else throw new IllegalArgumentException();
         return listToArray(arrays);
     }
 
     public static int[][] scannerDigitToArray(Scanner scan) {
         ArrayList<int[]> arrays = new ArrayList<>();
-        readLineMatrix(scan, arrays);
+        readLineMatrix(scan, arrays, false);
         return listToArray(arrays);
     }
 
 
-    private static int[][] listToArray(ArrayList<int[]> list) {
+    /**
+     * private metod for correctly connecting a collection
+     * of integer arrays to the main working algorithm
+     *
+     * @param list<int[]> is array line of integers
+     * @return int[][] array of arrays integers (two-dimensional array)
+     */
+    private static int[][] listToArray(List<int[]> list) {
         int[][] arr = new int[list.size()][];
         for (int i = 0; i < list.size(); i++) {
             arr[i] = list.get(i);

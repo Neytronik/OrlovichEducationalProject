@@ -1,5 +1,7 @@
 package orlovich.utility;
 
+//дописать доки в двух методах сканнеров и применить минимальную сумму
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -71,7 +73,16 @@ public final class Libraries {
         return true;
     }
 
-
+    /**
+     * <p> The main algorithm for finding the maximum sum of the submatrix
+     * takes a two-dimensional matrix as an array of arrays of integers
+     * <p> The validity of the incoming array is verified by the method {@link #validateArray(int[]...)}</p>
+     * <p> If the array is valid, then after evaluation the method returns
+     * a string containing the maximum sum and the coordinates of the submatrix</p>
+     *
+     * @param a is varargs arrays of integers (forExample int[][])
+     * @return String : maxSum and coordinates of subMatrix
+     */
     public static String maxSumAlgorithm(int[]... a) {
         /**
          * the field retains the largest sum of submatrix elements
@@ -113,6 +124,16 @@ public final class Libraries {
                 + "with coordinates diagonal: " + inicialPoint + " and " + endPoint);
     }
 
+    /**
+     * <p> The main algorithm for finding the minimum sum of the submatrix
+     * takes a two-dimensional matrix as an array of arrays of integers
+     * <p> The validity of the incoming array is verified by the method{@link #validateArray(int[]...)}</p>
+     * <p> If the array is valid, then after evaluation the method returns
+     * a string containing the minimum sum and the coordinates of the submatrix</p>
+     *
+     * @param a is varargs arrays of integers (forExample int[][])
+     * @return String : minSum and coordinates of subMatrix
+     */
     public static String minSumAlgorithm(int[]... a) {
         /**
          * the field retains the largest sum of submatrix elements
@@ -180,9 +201,11 @@ public final class Libraries {
      * writes this string to the collection of integer arrays passed in the parameters.</p>
      * <p>If the reading occurs from the file, if there are illegal characters
      * or an empty string, the Exception NumberFormatException is thrown</p>
+     *
      * @param scan   is {@code java.util.Scanner}
      * @param arrays is {@code List<int[]>}
-     * @throws NumberFormatException()
+     * @throws NumberFormatException if read line are illegal characters
+     *                               or an empty string
      */
     private static void readLineMatrix(Scanner scan, List<int[]> arrays, boolean readFile) {
         String line;
@@ -195,7 +218,7 @@ public final class Libraries {
                 numArr = Arrays.stream(line.split(" ")).mapToInt(Integer::parseInt).toArray();
                 arrays.add(numArr);
             } catch (NumberFormatException e) {
-                System.out.println("NumberFormatExeption in line: " + line + "\n"  //что если из файла? - бесконечный ввод
+                System.out.println("NumberFormatExeption in line: " + line + "\n"
                         + "re-enter line");
                 if (readFile) throw new NumberFormatException();
             }
@@ -203,25 +226,38 @@ public final class Libraries {
     }
 
 
+    /**
+     * @param scan is {@code java.util.Scanner;}
+     * @return int[][] is listToArray(List<int[]> list)
+     * @throws IllegalArgumentException if file is not exist
+     */
     public static int[][] scannerFileToArray(Scanner scan) {
 
         String path = scan.nextLine();
-        File file = new File(path);
         List<int[]> arrays = new ArrayList<>();
+        File file = new File(path);
         if (file.isFile()) {
-            try {
-                scan = new Scanner(file);
-            } catch (FileNotFoundException e) {
-                System.out.println("File not found!!!");
+            synchronized (file) {
+                try {
+                    scan = new Scanner(file);
+                } catch (FileNotFoundException e) {
+                    System.out.println("File not found!!!");
+                }
+                readLineMatrix(scan, arrays, true);  //throw NumberFormatExeption
+                scan.close();
             }
-            readLineMatrix(scan, arrays, true);  //throw NumberFormatExeption
         } else throw new IllegalArgumentException();
         return listToArray(arrays);
     }
 
+    /**
+     * @param scan is {@code java.util.Scanner;}
+     * @return int[][] is listToArray(List<int[]> list)
+     */
     public static int[][] scannerDigitToArray(Scanner scan) {
-        ArrayList<int[]> arrays = new ArrayList<>();
+        List<int[]> arrays = new ArrayList<>();
         readLineMatrix(scan, arrays, false);
+        scan.close();
         return listToArray(arrays);
     }
 

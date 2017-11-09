@@ -1,17 +1,16 @@
 package orlovich.console;
 
+//пересмотреть метод старт()
 import java.util.Scanner;
 
 import static orlovich.utility.Libraries.*;
 
 /**
  * <p> class providing a console dialog with the user and calling
- * the appropriate methods for processing the class {@code Libraries} </p>
- * <p> The class is a singleton and has a single method that
- * returns an instance of the class while in the constructor of the class
- * a dialog is being built. </p>
- * <p>The user entering commands from the keyboard comes to the desired
- * solution of the problem. </p>
+ * appropriate methods for handling the class {@code Libraries} </p>
+ * <p> Instances of the class are created using the {@code getDialog()} method
+ * and the instance can start() the dialog </p>
+ * <p> The user, in accordance with the instructions, enters commands from the keyboard </p>
  *
  * @author Orlovich Artem
  * @version 1.0
@@ -28,9 +27,15 @@ public final class ConsoleDialog {
         return new ConsoleDialog();
     }
 
+    /**
+     * Create a new instance using the method {@code getDialog()}
+     */
     private ConsoleDialog() {
     }
 
+    /**
+     * Metod is instanse class ConsoleDialog which starts the dialogue of finding the submatrix
+     */
     public void start() {
 
         System.out.println("To calculate the submatrix, enter\n" +

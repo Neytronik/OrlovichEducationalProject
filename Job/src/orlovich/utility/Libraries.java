@@ -17,7 +17,7 @@ import java.util.Scanner;
  * <p>Reading methods allow you to perform calculations
  * both from a file and after manually entering an array of numbers
  * The result of the class is the use of the search
- * algorithm {@code maxSumAlgorithm} or {@code minSumAlgorithm}  and return coordinate diagonal SubMatrix  </p>
+ * algorithm {@code sumAlgorithm} or {@code minSumAlgorithm}  and return coordinate diagonal SubMatrix  </p>
  * <p>
  * <p>subMatrixCoordinate Example</p>
  * <p> ___________________________________</p>
@@ -60,7 +60,7 @@ public final class Libraries {
      * @param array is two-dimensional array of integer values ​​(int [] []).
      * @return boolean.
      */
-    public static boolean validateArray(int[]... array) {
+    public static boolean validateArray(int[][] array) {
         if (array == null || array.length == 0) return false;
         if (array.length == 1) return true;
         else {
@@ -80,24 +80,19 @@ public final class Libraries {
      * <p> If the array is valid, then after evaluation the method returns
      * a string containing the maximum sum and the coordinates of the submatrix</p>
      *
-     * @param a is varargs arrays of integers (forExample int[][])
+     * @param array   is two-dimension arrays of integers (forExample int[][])
+     * @param minimum is a boolean with two possible parameters "true" for finding the minimal sum
+     *                and "false" for finding the maximum sum
      * @return String : maxSum and coordinates of subMatrix
      */
-    public static String maxSumAlgorithm(int[]... a) {
-        /**
-         * the field retains the largest sum of submatrix elements
-         */
-        int maxSum = 0;
-        if (!validateArray(a)) return "This matrix isn't corectly! \nEnter the correct matrix size of M on N";
+    public static String sumAlgorithm(int[][] array, boolean minimum) {
 
-        /**
-         * field M is vertical length of matrix
-         */
-        final int M = a.length;
-        /**
-         * field N is horisontal length of matrix
-         */
-        final int N = a[0].length;
+        int minOrMaxSum = 0;
+        if (!validateArray(array)) return "This matrix isn't corectly! \nEnter the correct matrix size of M on N";
+
+
+        final int M = array.length;
+        final int N = array[0].length;
 
         for (int startLine = 0; startLine < M; startLine++) {
             for (int startColumn = 0; startColumn < N; startColumn++) {
@@ -106,12 +101,22 @@ public final class Libraries {
                     int currentSum = 0;
                     int lineSum = 0;
                     for (int column = startColumn; column < N; column++) {
-                        lineSum += a[line][column];
+                        lineSum += array[line][column];
                         currentSum = lineSum + cache[column];
                         cache[column] = currentSum;
-                        if (currentSum > maxSum && ((startLine == line && startColumn == column) ||
+
+
+                        if (!minimum && (currentSum > minOrMaxSum) && ((startLine == line && startColumn == column) ||
                                 !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1)))) {
-                            maxSum = currentSum;
+
+                            minOrMaxSum = currentSum;                                       //maximal sum
+                            inicialPoint = new PointSubMatrix(startColumn, startLine);
+                            endPoint = new PointSubMatrix(column, line);
+
+                        } else if (minimum && (currentSum < minOrMaxSum) && ((startLine == line && startColumn == column) ||
+                                !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1)))) {
+
+                            minOrMaxSum = currentSum;                                       //minimal sum
                             inicialPoint = new PointSubMatrix(startColumn, startLine);
                             endPoint = new PointSubMatrix(column, line);
                         }
@@ -120,61 +125,9 @@ public final class Libraries {
             }
         }
 
-        return String.valueOf("Submatrix having the greatest sum of elements is equal to: " + maxSum + "\n"
+        return String.valueOf("Submatrix having the " + (minimum ? "minimal" : "greatest") + " sum of elements is equal to: " + minOrMaxSum + "\n"
                 + "with coordinates diagonal: " + inicialPoint + " and " + endPoint);
     }
-
-    /**
-     * <p> The main algorithm for finding the minimum sum of the submatrix
-     * takes a two-dimensional matrix as an array of arrays of integers
-     * <p> The validity of the incoming array is verified by the method{@link #validateArray(int[]...)}</p>
-     * <p> If the array is valid, then after evaluation the method returns
-     * a string containing the minimum sum and the coordinates of the submatrix</p>
-     *
-     * @param a is varargs arrays of integers (forExample int[][])
-     * @return String : minSum and coordinates of subMatrix
-     */
-    public static String minSumAlgorithm(int[]... a) {
-        /**
-         * the field retains the largest sum of submatrix elements
-         */
-        int minSum = 0;
-        if (!validateArray(a)) return "This matrix isn't corectly! \nEnter the correct matrix size of M on N";
-
-        /**
-         * field M is vertical length of matrix
-         */
-        final int M = a.length;
-        /**
-         * field N is horisontal length of matrix
-         */
-        final int N = a[0].length;
-
-        for (int startLine = 0; startLine < M; startLine++) {
-            for (int startColumn = 0; startColumn < N; startColumn++) {
-                int[] cache = new int[N];
-                for (int line = startLine; line < M; line++) {
-                    int currentSum = 0;
-                    int lineSum = 0;
-                    for (int column = startColumn; column < N; column++) {
-                        lineSum += a[line][column];
-                        currentSum = lineSum + cache[column];
-                        cache[column] = currentSum;
-                        if (currentSum < minSum && ((startLine == line && startColumn == column) ||
-                                !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1)))) {
-                            minSum = currentSum;
-                            inicialPoint = new PointSubMatrix(startColumn, startLine);
-                            endPoint = new PointSubMatrix(column, line);
-                        }
-                    }
-                }
-            }
-        }
-
-        return String.valueOf("Submatrix having the minimal sum of elements is equal to: " + minSum + "\n"
-                + "with coordinates diagonal: " + inicialPoint + " and " + endPoint);
-    }
-
 
     /**
      * <p>Nested class {@code PointSumMatrix} expresses
@@ -257,7 +210,6 @@ public final class Libraries {
     public static int[][] scannerDigitToArray(Scanner scan) {
         List<int[]> arrays = new ArrayList<>();
         readLineMatrix(scan, arrays, false);
-        scan.close();
         return listToArray(arrays);
     }
 

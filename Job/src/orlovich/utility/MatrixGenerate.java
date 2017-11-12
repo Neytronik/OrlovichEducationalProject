@@ -41,21 +41,23 @@ public class MatrixGenerate {
      * @return true if file is created
      */
     public boolean generate(int columns, int rows) {
-        File file = new File(path + "\\randMatrix.txt");
-        try (FileWriter writer = new FileWriter(file)) {
-            StringBuilder sB = new StringBuilder();
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    sB.append(rand.nextInt(127) + " ");
+        if (new File(path).isDirectory()) {
+            File file = new File(path + "\\randMatrix.txt");
+            try (FileWriter writer = new FileWriter(file)) {
+                StringBuilder sB = new StringBuilder();
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < columns; j++) {
+                        sB.append(rand.nextInt(127) + " ");
+                    }
+                    sB.append(System.lineSeparator());
                 }
-                sB.append(System.lineSeparator());
+                writer.write(sB.toString());
+                writer.flush();
+            } catch (IOException ex) {
+                return false;
             }
-            writer.write(sB.toString());
-            writer.flush();
-        } catch (IOException ex) {
-            System.out.println("writing to file failed!!!");
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }

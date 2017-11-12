@@ -1,6 +1,5 @@
 package orlovich.utility;
 
-//дописать доки в двух методах сканнеров и применить минимальную сумму
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -135,7 +134,7 @@ public final class Libraries {
      * representation of the submatrix in the
      * plane with its coordinates</p>
      */
-    public static final class PointSubMatrix {
+    private static final class PointSubMatrix {
         int x;
         int y;
 
@@ -178,11 +177,18 @@ public final class Libraries {
         }
     }
 
-
     /**
+     * <p>The method is used when reading the matrix from a text file.
+     * the input parameter Scaner with which it is read</p>
+     * <p>If the path to the file is incorrectly thrown, throws an IllegalArgumentException. </p>
+     * <p>Can throw an NumberFormatException in the case of non-integer matrix values ​​in
+     * the file when the readLineMatrix method is called
+     *</p>
      * @param scan is {@code java.util.Scanner;}
      * @return int[][] is listToArray(List<int[]> list)
      * @throws IllegalArgumentException if file is not exist
+     * @throws NumberFormatException if in file is
+     * non-integer
      */
     public static int[][] scannerFileToArray(Scanner scan) {
 
@@ -196,7 +202,7 @@ public final class Libraries {
                 } catch (FileNotFoundException e) {
                     System.out.println("File not found!!!");
                 }
-                readLineMatrix(scan, arrays, true);  //throw NumberFormatExeption
+                readLineMatrix(scan, arrays, true);  //throws NumberFormatExeption
                 scan.close();
             }
         } else throw new IllegalArgumentException();
@@ -204,15 +210,18 @@ public final class Libraries {
     }
 
     /**
+     * <p>The method is used when reading the input matrix,
+     * the input parameter Scaner with which to read. </p>
+     * <p>Can throw an exception in the case of non-integer matrix values ​​and empty lines when calling the readLineMatrix</p>
      * @param scan is {@code java.util.Scanner;}
      * @return int[][] is listToArray(List<int[]> list)
+     * @throws NumberFormatException if enter non-integer
      */
     public static int[][] scannerDigitToArray(Scanner scan) {
         List<int[]> arrays = new ArrayList<>();
         readLineMatrix(scan, arrays, false);
         return listToArray(arrays);
     }
-
 
     /**
      * private metod for correctly connecting a collection

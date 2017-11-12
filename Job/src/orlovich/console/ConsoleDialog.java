@@ -1,6 +1,5 @@
 package orlovich.console;
 
-//пересмотреть метод старт()
 
 import orlovich.utility.MatrixGenerate;
 

@@ -44,7 +44,7 @@ public final class ConsoleDialog {
         System.out.println("To calculate the submatrix, enter\n" +
                 "   \"P MIN\" or \"P MAX\"              -to calculate the submatrix from a file\n" +
                 "   \"D MIN\" or \"D MAX\"              -to enter the matrix manually\n" +
-                "   \"CRM\" or \"CreateMATRIX\"         -to enter the matrix manually\n" +
+                "   \"CRM\" or \"CreateMATRIX\"         -to create a rectangular matrix in file\n" +
                 "   \"HELP\"                          -for a full list commands\n" +
                 "   \"EXIT\"                          -to quit the aplication");
 
@@ -86,28 +86,6 @@ public final class ConsoleDialog {
                     break;
 
 
-                case "HELP":
-                    System.out.println("USAGE: " +
-                            "This program only works with the correct rectangular matrix size M on N\n" +
-                            "commands ending in MIN compute a minimum submatrix or ending in MAX compute a maximum\n" +
-                            "\nEnter:\n" +
-                            "\"P MIN\" or \"P MAX\"         - to calculate the submatrix from a file\n" +
-                            "                             enter the full file name in the form :\n" +
-                            "                             \\full_path_folder\\file_name.txt\n\n" +
-
-                            "\"D MIN\" or \"D MAX\"         - to enter the matrix manually\n" +
-                            "                             enter the numbers of matrix\n" +
-                            "                             N1 N2 N3 ... Nn ->enter->\n" +
-                            "                             M1 M2 M3 ... Mn\n\n" +
-
-                            "\"CRM\" or \"CreateMATRIX\"    - to create a rectangular matrix\n" +
-                            "                             in a text file, then you need to enter\n" +
-                            "                             the path of the desired directory\n\n" +
-
-                            "\"EXIT\"                     - quit the aplication");
-                    break;
-
-
                 case "CRM":
                 case "CREATEMATRIX":
                     System.out.println("enter the path to create the matrix file in the form \\path_folder");
@@ -134,6 +112,28 @@ public final class ConsoleDialog {
                 case "":
                     System.out.println("Use command HELP");
                     break;
+
+                case "HELP":
+                    System.out.println("USAGE: " +
+                            "This program only works with the correct rectangular matrix size M on N\n" +
+                            "commands ending in MIN compute a minimum submatrix or ending in MAX compute a maximum\n" +
+                            "\nEnter:\n" +
+                            "\"P MIN\" or \"P MAX\"         - to calculate the submatrix from a file\n" +
+                            "                             enter the full file name in the form :\n" +
+                            "                             \\full_path_folder\\file_name.txt\n\n" +
+
+                            "\"D MIN\" or \"D MAX\"         - to enter the matrix manually\n" +
+                            "                             enter the numbers of matrix\n" +
+                            "                             N1 N2 N3 ... Nn ->enter->\n" +
+                            "                             M1 M2 M3 ... Mn\n\n" +
+
+                            "\"CRM\" or \"CreateMATRIX\"    - to create a rectangular matrix\n" +
+                            "                             in a text file, then you need to enter\n" +
+                            "                             the path of the desired directory\n\n" +
+
+                            "\"EXIT\"                     - quit the aplication");
+                    break;
+
 
                 case "EXIT":
                     scanner.close();

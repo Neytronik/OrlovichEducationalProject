@@ -1,4 +1,4 @@
-package orlovich.utility;
+package main.java.orlovich.utility;
 
 import java.io.File;
 import java.io.FileWriter;

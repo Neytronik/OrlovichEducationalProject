@@ -1,12 +1,12 @@
-package orlovich.console;
+package main.java.orlovich.console;
 
 
-import orlovich.utility.MatrixGenerate;
+import main.java.orlovich.utility.MatrixGenerate;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static orlovich.utility.Libraries.*;
+import static main.java.orlovich.utility.Libraries.*;
 
 /**
  * <p> class providing a console dialog with the user and calling
@@ -17,27 +17,27 @@ import static orlovich.utility.Libraries.*;
  *
  * @author Orlovich Artem
  * @version 1.0
- * @see orlovich.utility.Libraries
+ * @see main.java.orlovich.utility.Libraries
  */
 public final class ConsoleDialog {
 
     /**
-     * <p>Metod returned new instanse  {@code ConsoleDialog}</p>
+     * <p>Metod returned new instance  {@code ConsoleDialog}</p>
      *
-     * @return instanse ConsoleDialog
+     * @return instance ConsoleDialog
      */
     public static ConsoleDialog getDialog() {
         return new ConsoleDialog();
     }
 
     /**
-     * Create a new instance using the method {@code getDialog()}
+     * <p>Create a new instance using the method {@code getDialog()}.</p>
      */
     private ConsoleDialog() {
     }
 
     /**
-     * Metod is instanse class ConsoleDialog which starts the dialogue of finding the submatrix
+     * <p>Metod is instanse class ConsoleDialog which starts the dialogue of finding the submatrix.</p>
      */
     public void start() {
 
@@ -71,8 +71,8 @@ public final class ConsoleDialog {
                         continue;
                     }
                     minimum = scanCommand.equals("P MIN");
-                    String subMatrixFile = sumAlgorithm(scanArray, minimum);
-                    System.out.println(subMatrixFile + "\n");
+                    SubMatrix subMatrixFile = findSubMatrixAlgorithm(scanArray, minimum);
+                    info(subMatrixFile);
                     break;
 
 
@@ -81,8 +81,8 @@ public final class ConsoleDialog {
                     System.out.println("enter the numbers of matrix N1 N2 N3 ... Nn ->enter-> M1 M2 M3 ... Mn");
                     Scanner scan = new Scanner(System.in);
                     minimum = scanCommand.equals("D MIN");
-                    String subMatrix = sumAlgorithm(scannerDigitToArray(scan), minimum);
-                    System.out.println(subMatrix + "\n");
+                    SubMatrix subMatrix = findSubMatrixAlgorithm(scannerDigitToArray(scan), minimum);
+                    info(subMatrix);
                     break;
 
 
@@ -133,8 +133,6 @@ public final class ConsoleDialog {
 
                             "\"EXIT\"                     - quit the aplication");
                     break;
-
-
                 case "EXIT":
                     scanner.close();
                     System.exit(0);

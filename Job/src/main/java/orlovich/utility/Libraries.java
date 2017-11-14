@@ -1,4 +1,4 @@
-package orlovich.utility;
+package main.java.orlovich.utility;
 
 
 import java.io.File;
@@ -16,7 +16,7 @@ import java.util.Scanner;
  * <p>Reading methods allow you to perform calculations
  * both from a file and after manually entering an array of numbers
  * The result of the class is the use of the search
- * algorithm {@code sumAlgorithm} or {@code minSumAlgorithm}  and return coordinate diagonal SubMatrix  </p>
+ * algorithm {@code findSubMatrixAlgorithm} or {@code minSumAlgorithm}  and return coordinate diagonal SubMatrix  </p>
  * <p>
  * <p>subMatrixCoordinate Example</p>
  * <p> ___________________________________</p>
@@ -30,18 +30,71 @@ import java.util.Scanner;
 public final class Libraries {
 
     /**
-     * The field {@code inicialPoint} is first point of diadonal subMatrix
-     */
-    private static PointSubMatrix inicialPoint;
-    /**
-     * The field {@code endPoint} is second point of diadonal subMatrix
-     */
-    private static PointSubMatrix endPoint;
-
-    /**
      * Don't let anyone instantiate this class.
      */
     private Libraries() {
+    }
+
+    /**
+     * <p>Nested class {@code PointSumMatrix} expresses
+     * the abstraction of the two-dimensional
+     * representation of the subMatrix in the
+     * plane with its coordinates</p>
+     */
+    public static final class PointSubMatrix {
+        int x;
+        int y;
+
+        public PointSubMatrix(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public PointSubMatrix(PointSubMatrix p) {
+            this.x = p.x;
+            this.y = p.y;
+        }
+
+        public String toString() {
+            return "[x=" + x + ", y=" + y + ']';
+        }
+
+    }
+
+    /**
+     * Nested class contains information about the sum and coordinates the subMatrix
+     */
+    public static final class SubMatrix {
+        private int sumMatrixElement;
+        PointSubMatrix inicial;
+        PointSubMatrix end;
+
+        public SubMatrix(int sumMatrixElement, PointSubMatrix inicial, PointSubMatrix end) {
+            this.sumMatrixElement = sumMatrixElement;
+            this.inicial = inicial;
+            this.end = end;
+        }
+
+        public int getSumMatrixElement() {
+            return sumMatrixElement;
+        }
+
+        public PointSubMatrix getinicialPoint() {
+            return new PointSubMatrix(inicial);
+        }
+
+        public PointSubMatrix getEndPoint() {
+            return new PointSubMatrix(end);
+        }
+
+        @Override
+        public String toString() {
+            return "subMatrix{" +
+                    "sumElement = " + sumMatrixElement +
+                    ", with coordinates diagonal: begin " + inicial +
+                    ", end=" + end +
+                    '}';
+        }
     }
 
     /**
@@ -73,25 +126,28 @@ public final class Libraries {
     }
 
     /**
-     * <p> The main algorithm for finding the maximum sum of the submatrix
+     * <p> The run algorithm for finding the maximum sum of the submatrix
      * takes a two-dimensional matrix as an array of arrays of integers
      * <p> The validity of the incoming array is verified by the method {@link #validateArray(int[]...)}</p>
      * <p> If the array is valid, then after evaluation the method returns
-     * a string containing the maximum sum and the coordinates of the submatrix</p>
+     * a instance subMatrix containing the maximum sum and the coordinates of the submatrix</p>
      *
      * @param array   is two-dimension arrays of integers (forExample int[][])
      * @param minimum is a boolean with two possible parameters "true" for finding the minimal sum
      *                and "false" for finding the maximum sum
-     * @return String : maxSum and coordinates of subMatrix
+     * @return SubMatrix
      */
-    public static String sumAlgorithm(int[][] array, boolean minimum) {
+    public static SubMatrix findSubMatrixAlgorithm(int[][] array, boolean minimum) {
 
-        int minOrMaxSum = 0;
-        if (!validateArray(array)) return "This matrix isn't corectly! \nEnter the correct matrix size of M on N";
+        if (!validateArray(array)) return null;
 
-
+        int minOrMaxSum = array[0][0];
         final int M = array.length;
         final int N = array[0].length;
+        PointSubMatrix inicialPoint = new PointSubMatrix(0, 0);
+        PointSubMatrix endPoint = new PointSubMatrix(0, 0);
+        SubMatrix subMatrix = new SubMatrix(minOrMaxSum, inicialPoint, endPoint);
+
 
         for (int startLine = 0; startLine < M; startLine++) {
             for (int startColumn = 0; startColumn < N; startColumn++) {
@@ -104,13 +160,13 @@ public final class Libraries {
                         currentSum = lineSum + cache[column];
                         cache[column] = currentSum;
 
-
                         if (!minimum && (currentSum > minOrMaxSum) && ((startLine == line && startColumn == column) ||
                                 !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1)))) {
 
                             minOrMaxSum = currentSum;                                       //maximal sum
                             inicialPoint = new PointSubMatrix(startColumn, startLine);
                             endPoint = new PointSubMatrix(column, line);
+                            subMatrix = new SubMatrix(minOrMaxSum, inicialPoint, endPoint);
 
                         } else if (minimum && (currentSum < minOrMaxSum) && ((startLine == line && startColumn == column) ||
                                 !((startLine == 0 && line == M - 1) && (startColumn == 0 && column == N - 1)))) {
@@ -118,34 +174,14 @@ public final class Libraries {
                             minOrMaxSum = currentSum;                                       //minimal sum
                             inicialPoint = new PointSubMatrix(startColumn, startLine);
                             endPoint = new PointSubMatrix(column, line);
+                            subMatrix = new SubMatrix(minOrMaxSum, inicialPoint, endPoint);
                         }
                     }
                 }
             }
         }
 
-        return String.valueOf("Submatrix having the " + (minimum ? "minimal" : "greatest") + " sum of elements is equal to: " + minOrMaxSum + "\n"
-                + "with coordinates diagonal: " + inicialPoint + " and " + endPoint);
-    }
-
-    /**
-     * <p>Nested class {@code PointSumMatrix} expresses
-     * the abstraction of the two-dimensional
-     * representation of the submatrix in the
-     * plane with its coordinates</p>
-     */
-    private static final class PointSubMatrix {
-        int x;
-        int y;
-
-        public PointSubMatrix(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public String toString() {
-            return "[x=" + x + ", y=" + y + "]";
-        }
+        return subMatrix;
     }
 
     /**
@@ -162,7 +198,7 @@ public final class Libraries {
     private static void readLineMatrix(Scanner scan, List<int[]> arrays, boolean readFile) {
         String line;
         while (scan.hasNextLine()) {
-            if ((line = scan.nextLine()).equals("")) {
+            if ((line = scan.nextLine().trim()).equals("")) {
                 break;
             }
             int[] numArr;
@@ -179,16 +215,17 @@ public final class Libraries {
 
     /**
      * <p>The method is used when reading the matrix from a text file.
-     * the input parameter Scaner with which it is read</p>
+     * the input parameter Scanner with which it is read</p>
      * <p>If the path to the file is incorrectly thrown, throws an IllegalArgumentException. </p>
      * <p>Can throw an NumberFormatException in the case of non-integer matrix values ​​in
      * the file when the readLineMatrix method is called
-     *</p>
+     * </p>
+     *
      * @param scan is {@code java.util.Scanner;}
      * @return int[][] is listToArray(List<int[]> list)
      * @throws IllegalArgumentException if file is not exist
-     * @throws NumberFormatException if in file is
-     * non-integer
+     * @throws NumberFormatException    if in file is
+     *                                  non-integer
      */
     public static int[][] scannerFileToArray(Scanner scan) {
 
@@ -196,23 +233,24 @@ public final class Libraries {
         List<int[]> arrays = new ArrayList<>();
         File file = new File(path);
         if (file.isFile()) {
-            synchronized (file) {
-                try {
-                    scan = new Scanner(file);
-                } catch (FileNotFoundException e) {
-                    System.out.println("File not found!!!");
-                }
-                readLineMatrix(scan, arrays, true);  //throws NumberFormatExeption
-                scan.close();
+
+            try {
+                scan = new Scanner(file);
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found!!!");
             }
+            readLineMatrix(scan, arrays, true);  //throws NumberFormatExeption
+            scan.close();
+
         } else throw new IllegalArgumentException();
         return listToArray(arrays);
     }
 
     /**
      * <p>The method is used when reading the input matrix,
-     * the input parameter Scaner with which to read. </p>
+     * the input parameter Scanner with which to read. </p>
      * <p>Can throw an exception in the case of non-integer matrix values ​​and empty lines when calling the readLineMatrix</p>
+     *
      * @param scan is {@code java.util.Scanner;}
      * @return int[][] is listToArray(List<int[]> list)
      * @throws NumberFormatException if enter non-integer
@@ -224,8 +262,8 @@ public final class Libraries {
     }
 
     /**
-     * private metod for correctly connecting a collection
-     * of integer arrays to the main working algorithm
+     * <p>Private method for correctly connecting a collection
+     * of integer arrays to the run working algorithm</p>
      *
      * @param list<int[]> is array line of integers
      * @return int[][] array of arrays integers (two-dimensional array)
@@ -236,6 +274,18 @@ public final class Libraries {
             arr[i] = list.get(i);
         }
         return arr;
+    }
+
+    /**
+     * <p>Displays information about subMatrix</p>
+     *
+     * @param subMatrix
+     */
+    public static void info(SubMatrix subMatrix) {
+        if (subMatrix == null) {
+            System.out.println("This matrix isn't corectly! \nEnter the correct matrix size of M on N\n");
+        } else
+            System.out.println(subMatrix + "\n");
     }
 }
 

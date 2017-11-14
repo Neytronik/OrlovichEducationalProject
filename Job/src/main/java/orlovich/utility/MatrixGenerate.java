@@ -1,5 +1,7 @@
 package main.java.orlovich.utility;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,18 +15,19 @@ import java.util.Random;
  * @version 1.0
  */
 public class MatrixGenerate {
+    private static final Logger log = Logger.getLogger(MatrixGenerate.class);
     /**
      * {@code path} is directory for write file of Matrix
      */
     private String path;
     /**
-     * in the generation, the Random object is used
+     * In the generation, the Random object is used
      * with the initial grain of 47
      */
-    private static Random rand = new Random(47);
+    private static final Random rand = new Random(47);
 
     /**
-     * the constructor sets the directory of the created file
+     * In constructor sets the directory of the created file
      *
      * @param path is directory
      */
@@ -33,10 +36,10 @@ public class MatrixGenerate {
     }
 
     /**
-     * the method generates a txt file with the specified number of rows (vertical)
-     * and columns (horisontal) of integer values
+     * <p>The method generates a txt file with the specified number of rows (vertical)
+     * and columns (horizontal) of integer values
      * ​​and returns true if the file is created and false
-     * if an input error occurred during the creation
+     * if an input error occurred during the creation</p>
      *
      * @param columns is length of line matrix
      * @param rows    is length of column matrix
@@ -56,6 +59,7 @@ public class MatrixGenerate {
                 writer.write(sB.toString());
                 writer.flush();
             } catch (IOException ex) {
+                log.info("Error while writing a random matrix file",ex);
                 return false;
             }
             return true;

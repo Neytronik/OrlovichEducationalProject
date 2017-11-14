@@ -2,6 +2,7 @@ package main.java.orlovich.console;
 
 
 import main.java.orlovich.utility.MatrixGenerate;
+import org.apache.log4j.Logger;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -20,6 +21,7 @@ import static main.java.orlovich.utility.Libraries.*;
  * @see main.java.orlovich.utility.Libraries
  */
 public final class ConsoleDialog {
+    private static final Logger log = Logger.getLogger(ConsoleDialog.class);
 
     /**
      * <p>Metod returned new instance  {@code ConsoleDialog}</p>
@@ -41,6 +43,7 @@ public final class ConsoleDialog {
      */
     public void start() {
 
+        log.info("start session");
         System.out.println("To calculate the submatrix, enter\n" +
                 "   \"P MIN\" or \"P MAX\"              -to calculate the submatrix from a file\n" +
                 "   \"D MIN\" or \"D MAX\"              -to enter the matrix manually\n" +
@@ -57,37 +60,44 @@ public final class ConsoleDialog {
 
                 case "P MIN":
                 case "P MAX":
+                    log.info("user input P [*]");
                     System.out.println("enter the path to the matrix file in the form \\path_folder\\file_name.txt");
                     Scanner scanPath = new Scanner(System.in);
                     int[][] scanArray;
                     try {
                         scanArray = scannerFileToArray(scanPath);
                     } catch (NumberFormatException e) {
-                        System.out.println("Incorrect line in Matrix. ");
+                        log.info("Incorrect line mtrx", e);
+                        System.out.println("Incorrect line in Matrix.");
                         continue;
                     } catch (IllegalArgumentException i) {
+                        log.info("Incorrect path the file", i);
                         System.out.println("Incorrect path the file!!! Retry the operation...\n" +
                                 "Enter HELP for a full list commands or EXIT to quit the aplication");
                         continue;
                     }
                     minimum = scanCommand.equals("P MIN");
                     SubMatrix subMatrixFile = findSubMatrixAlgorithm(scanArray, minimum);
-                    info(subMatrixFile);
+                    outMessage(subMatrixFile);
+                    log.info("P [*]  successful");
                     break;
 
 
                 case "D MIN":
                 case "D MAX":
+                    log.info("user input D [*]");
                     System.out.println("enter the numbers of matrix N1 N2 N3 ... Nn ->enter-> M1 M2 M3 ... Mn");
                     Scanner scan = new Scanner(System.in);
                     minimum = scanCommand.equals("D MIN");
                     SubMatrix subMatrix = findSubMatrixAlgorithm(scannerDigitToArray(scan), minimum);
-                    info(subMatrix);
+                    outMessage(subMatrix);
+                    log.info("D [*]  successful");
                     break;
 
 
                 case "CRM":
                 case "CREATEMATRIX":
+                    log.info("begin create randMatrix");
                     System.out.println("enter the path to create the matrix file in the form \\path_folder");
                     Scanner forCreate = new Scanner(System.in);
                     MatrixGenerate mtrx = new MatrixGenerate(forCreate.nextLine());
@@ -102,12 +112,17 @@ public final class ConsoleDialog {
                             throw new InputMismatchException();
                         }
                     } catch (InputMismatchException ime) {
+                        log.info("incorrect input size of matrix",ime);
                         System.out.println("incorrect size input!!!");
                         break;
                     }
                     if (colomns >= 0 && rows >= 0 && mtrx.generate(colomns, rows)) {
+                        log.info("random matrix is create");
                         System.out.println("Matrix size of " + colomns + " on " + rows + " is created!!!");
-                    } else System.out.println("writing to file failed!!!");
+                    } else {
+                        log.info("writing file failed");
+                        System.out.println("writing to file failed!!!");
+                    }
                     break;
                 case "":
                     System.out.println("Use command HELP");
@@ -134,6 +149,7 @@ public final class ConsoleDialog {
                             "\"EXIT\"                     - quit the aplication");
                     break;
                 case "EXIT":
+                    log.info("cancel session");
                     scanner.close();
                     System.exit(0);
                 default:

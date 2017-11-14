@@ -1,6 +1,8 @@
 package main.java.orlovich.utility;
 
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import java.util.Scanner;
  */
 public final class Libraries {
 
+    private static final Logger log = Logger.getLogger(Libraries.class);
     /**
      * Don't let anyone instantiate this class.
      */
@@ -66,12 +69,12 @@ public final class Libraries {
      */
     public static final class SubMatrix {
         private int sumMatrixElement;
-        PointSubMatrix inicial;
+        PointSubMatrix initial;
         PointSubMatrix end;
 
-        public SubMatrix(int sumMatrixElement, PointSubMatrix inicial, PointSubMatrix end) {
+        public SubMatrix(int sumMatrixElement, PointSubMatrix initial, PointSubMatrix end) {
             this.sumMatrixElement = sumMatrixElement;
-            this.inicial = inicial;
+            this.initial = initial;
             this.end = end;
         }
 
@@ -80,7 +83,7 @@ public final class Libraries {
         }
 
         public PointSubMatrix getinicialPoint() {
-            return new PointSubMatrix(inicial);
+            return new PointSubMatrix(initial);
         }
 
         public PointSubMatrix getEndPoint() {
@@ -91,7 +94,7 @@ public final class Libraries {
         public String toString() {
             return "subMatrix{" +
                     "sumElement = " + sumMatrixElement +
-                    ", with coordinates diagonal: begin " + inicial +
+                    ", with coordinates diagonal: begin " + initial +
                     ", end=" + end +
                     '}';
         }
@@ -139,7 +142,9 @@ public final class Libraries {
      */
     public static SubMatrix findSubMatrixAlgorithm(int[][] array, boolean minimum) {
 
-        if (!validateArray(array)) return null;
+        if (!validateArray(array)) {
+            log.info("non-validate array");
+            return null;}
 
         int minOrMaxSum = array[0][0];
         final int M = array.length;
@@ -206,6 +211,7 @@ public final class Libraries {
                 numArr = Arrays.stream(line.split(" ")).mapToInt(Integer::parseInt).toArray();
                 arrays.add(numArr);
             } catch (NumberFormatException e) {
+                log.info("user incorrect manually input number format",e);
                 System.out.println("NumberFormatExeption in line: " + line + "\n"
                         + "re-enter line");
                 if (readFile) throw new NumberFormatException();
@@ -237,12 +243,18 @@ public final class Libraries {
             try {
                 scan = new Scanner(file);
             } catch (FileNotFoundException e) {
+                log.info("file not found",e);
                 System.out.println("File not found!!!");
             }
+            log.info("reading is begin");
             readLineMatrix(scan, arrays, true);  //throws NumberFormatExeption
+            log.info("reading is complete");
             scan.close();
 
-        } else throw new IllegalArgumentException();
+        } else{
+            log.info("scanning is not file");
+            throw new IllegalArgumentException();}
+
         return listToArray(arrays);
     }
 
@@ -281,7 +293,7 @@ public final class Libraries {
      *
      * @param subMatrix
      */
-    public static void info(SubMatrix subMatrix) {
+    public static void outMessage(SubMatrix subMatrix) {
         if (subMatrix == null) {
             System.out.println("This matrix isn't corectly! \nEnter the correct matrix size of M on N\n");
         } else

@@ -30,8 +30,11 @@ import java.util.Scanner;
  * @version 1.0
  */
 public final class Libraries {
-
+    /**
+     * <p>Logger</p>
+     */
     private static final Logger log = Logger.getLogger(Libraries.class);
+
     /**
      * Don't let anyone instantiate this class.
      */
@@ -47,6 +50,24 @@ public final class Libraries {
     public static final class PointSubMatrix {
         int x;
         int y;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            PointSubMatrix that = (PointSubMatrix) o;
+
+            if (x != that.x) return false;
+            return y == that.y;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = x;
+            result = 31 * result + y;
+            return result;
+        }
 
         public PointSubMatrix(int x, int y) {
             this.x = x;
@@ -69,6 +90,7 @@ public final class Libraries {
      */
     public static final class SubMatrix {
         private int sumMatrixElement;
+
         PointSubMatrix initial;
         PointSubMatrix end;
 
@@ -76,6 +98,26 @@ public final class Libraries {
             this.sumMatrixElement = sumMatrixElement;
             this.initial = initial;
             this.end = end;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            SubMatrix subMatrix = (SubMatrix) o;
+
+            if (sumMatrixElement != subMatrix.sumMatrixElement) return false;
+            if (!initial.equals(subMatrix.initial)) return false;
+            return end.equals(subMatrix.end);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = sumMatrixElement;
+            result = 31 * result + initial.hashCode();
+            result = 31 * result + end.hashCode();
+            return result;
         }
 
         public int getSumMatrixElement() {
@@ -144,7 +186,8 @@ public final class Libraries {
 
         if (!validateArray(array)) {
             log.info("non-validate array");
-            return null;}
+            return null;
+        }
 
         int minOrMaxSum = array[0][0];
         final int M = array.length;
@@ -211,7 +254,7 @@ public final class Libraries {
                 numArr = Arrays.stream(line.split(" ")).mapToInt(Integer::parseInt).toArray();
                 arrays.add(numArr);
             } catch (NumberFormatException e) {
-                log.info("user incorrect manually input number format",e);
+                log.info("user incorrect manually input number format", e);
                 System.out.println("NumberFormatExeption in line: " + line + "\n"
                         + "re-enter line");
                 if (readFile) throw new NumberFormatException();
@@ -243,17 +286,18 @@ public final class Libraries {
             try {
                 scan = new Scanner(file);
             } catch (FileNotFoundException e) {
-                log.info("file not found",e);
+                log.error("file matrix not found");
                 System.out.println("File not found!!!");
             }
-            log.info("reading is begin");
+            log.info("reading file is begin");
             readLineMatrix(scan, arrays, true);  //throws NumberFormatExeption
             log.info("reading is complete");
             scan.close();
 
-        } else{
-            log.info("scanning is not file");
-            throw new IllegalArgumentException();}
+        } else {
+            log.error("scanning is not file");
+            throw new IllegalArgumentException();
+        }
 
         return listToArray(arrays);
     }
@@ -295,6 +339,7 @@ public final class Libraries {
      */
     public static void outMessage(SubMatrix subMatrix) {
         if (subMatrix == null) {
+            log.error("input incorrect matrix");
             System.out.println("This matrix isn't corectly! \nEnter the correct matrix size of M on N\n");
         } else
             System.out.println(subMatrix + "\n");

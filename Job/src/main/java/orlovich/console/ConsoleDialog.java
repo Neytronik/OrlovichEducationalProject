@@ -60,18 +60,18 @@ public final class ConsoleDialog {
 
                 case "P MIN":
                 case "P MAX":
-                    log.info("user input P [*]");
+                    log.info("user input \"P\"");
                     System.out.println("enter the path to the matrix file in the form \\path_folder\\file_name.txt");
                     Scanner scanPath = new Scanner(System.in);
                     int[][] scanArray;
                     try {
                         scanArray = scannerFileToArray(scanPath);
                     } catch (NumberFormatException e) {
-                        log.info("Incorrect line mtrx", e);
+                        log.error("Incorrect line matrix");
                         System.out.println("Incorrect line in Matrix.");
                         continue;
                     } catch (IllegalArgumentException i) {
-                        log.info("Incorrect path the file", i);
+                        log.error("Incorrect path the file");
                         System.out.println("Incorrect path the file!!! Retry the operation...\n" +
                                 "Enter HELP for a full list commands or EXIT to quit the aplication");
                         continue;
@@ -79,19 +79,19 @@ public final class ConsoleDialog {
                     minimum = scanCommand.equals("P MIN");
                     SubMatrix subMatrixFile = findSubMatrixAlgorithm(scanArray, minimum);
                     outMessage(subMatrixFile);
-                    log.info("P [*]  successful");
+                    log.info("operation \"P\" successful");
                     break;
 
 
                 case "D MIN":
                 case "D MAX":
-                    log.info("user input D [*]");
+                    log.info("user input \"D\"");
                     System.out.println("enter the numbers of matrix N1 N2 N3 ... Nn ->enter-> M1 M2 M3 ... Mn");
                     Scanner scan = new Scanner(System.in);
                     minimum = scanCommand.equals("D MIN");
                     SubMatrix subMatrix = findSubMatrixAlgorithm(scannerDigitToArray(scan), minimum);
                     outMessage(subMatrix);
-                    log.info("D [*]  successful");
+                    log.info("operation \"D\" successful");
                     break;
 
 
@@ -112,7 +112,7 @@ public final class ConsoleDialog {
                             throw new InputMismatchException();
                         }
                     } catch (InputMismatchException ime) {
-                        log.info("incorrect input size of matrix",ime);
+                        log.error("incorrect input size of matrix");
                         System.out.println("incorrect size input!!!");
                         break;
                     }
@@ -131,7 +131,7 @@ public final class ConsoleDialog {
                 case "HELP":
                     System.out.println("USAGE: " +
                             "This program only works with the correct rectangular matrix size M on N\n" +
-                            "commands ending in MIN compute a minimum submatrix or ending in MAX compute a maximum\n" +
+                            "commands ending in MIN compute a minimum subMatrix or ending in MAX compute a maximum\n" +
                             "\nEnter:\n" +
                             "\"P MIN\" or \"P MAX\"         - to calculate the submatrix from a file\n" +
                             "                             enter the full file name in the form :\n" +

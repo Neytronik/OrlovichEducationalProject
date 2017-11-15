@@ -14,12 +14,12 @@ public class UtilityTest {
         int[][] rightMatrix =
                 new int[][]{
                         {0, -45, 0, 10, 10, 10},
-                        {0,  -2, 0, 10, 10, 10},
-                        {0,  -3, 0, 10, 10, 10}
+                        {0, -2, 0, 10, 10, 10},
+                        {0, -3, 0, 10, 10, 10}
                 };
         PointSubMatrix start = new PointSubMatrix(2, 0);
         PointSubMatrix end = new PointSubMatrix(5, 2);
-        assertEquals(new SubMatrix(90,start,end), findSubMatrixAlgorithm(rightMatrix,false));
+        assertEquals(new SubMatrix(90, start, end), findSubMatrixAlgorithm(rightMatrix, false));
 
     }
 
@@ -28,12 +28,12 @@ public class UtilityTest {
         int[][] rightMatrix =
                 new int[][]{
                         {0, -45, 0, 10, 10, 10},
-                        {0,  -2, 0, 10, 10, 10},
-                        {0,  -3, 0, 10, 10, 10}
+                        {0, -2, 0, 10, 10, 10},
+                        {0, -3, 0, 10, 10, 10}
                 };
         PointSubMatrix start = new PointSubMatrix(0, 0);
         PointSubMatrix end = new PointSubMatrix(1, 2);
-        assertEquals(new SubMatrix(-50,start,end), findSubMatrixAlgorithm(rightMatrix,true));
+        assertEquals(new SubMatrix(-50, start, end), findSubMatrixAlgorithm(rightMatrix, true));
     }
 
     @Test

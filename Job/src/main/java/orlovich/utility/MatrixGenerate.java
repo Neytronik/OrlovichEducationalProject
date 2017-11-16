@@ -1,4 +1,4 @@
-package main.java.orlovich.utility;
+package orlovich.utility;
 
 import org.apache.log4j.Logger;
 
@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
+
 
 /**
  * This class is designed to create a

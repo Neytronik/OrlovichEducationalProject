@@ -1,10 +1,10 @@
-package test.java.utilityTest;
+package utilityTest;
 
 
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static main.java.orlovich.utility.Libraries.*;
+import static orlovich.utility.Libraries.*;
 
 public class UtilityTest {
 

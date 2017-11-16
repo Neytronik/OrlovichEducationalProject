@@ -1,13 +1,13 @@
-package main.java.orlovich.console;
+package orlovich.console;
 
 
-import main.java.orlovich.utility.MatrixGenerate;
+import orlovich.utility.MatrixGenerate;
 import org.apache.log4j.Logger;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static main.java.orlovich.utility.Libraries.*;
+import static orlovich.utility.Libraries.*;
 
 /**
  * <p> class providing a console dialog with the user and calling

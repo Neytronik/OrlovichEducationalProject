@@ -1,4 +1,4 @@
-package main.java.orlovich.utility;
+package orlovich.utility;
 
 
 import org.apache.log4j.Logger;

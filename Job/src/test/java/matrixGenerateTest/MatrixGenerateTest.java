@@ -1,7 +1,7 @@
-package test.java.matrixGenerateTest;
+package matrixGenerateTest;
 
 import org.junit.Test;
-import main.java.orlovich.utility.MatrixGenerate;
+import orlovich.utility.MatrixGenerate;
 
 import static org.junit.Assert.*;
 

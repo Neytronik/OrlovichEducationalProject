@@ -1,6 +1,6 @@
-package main.java.orlovich.run;
+package orlovich.run;
 
-import main.java.orlovich.console.ConsoleDialog;
+import orlovich.console.ConsoleDialog;
 
 /**
  * Class for a start aplication

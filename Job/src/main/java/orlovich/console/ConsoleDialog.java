@@ -18,7 +18,7 @@ import static orlovich.utility.Libraries.*;
  *
  * @author Orlovich Artem
  * @version 1.0
- * @see main.java.orlovich.utility.Libraries
+ * @see orlovich.utility.Libraries
  */
 public final class ConsoleDialog {
     private static final Logger log = Logger.getLogger(ConsoleDialog.class);

@@ -19,12 +19,12 @@ import java.util.Scanner;
  * both from a file and after manually entering an array of numbers
  * The result of the class is the use of the search
  * algorithm {@code findSubMatrixAlgorithm} or {@code minSumAlgorithm}  and return coordinate diagonal SubMatrix  </p>
- * <p>
+ *
  * <p>subMatrixCoordinate Example</p>
  * <p> ___________________________________</p>
- * <p>|__|__|xy||||||||||||||||__|__|__|__| inicialPoint</p>
+ * <p>|__|__|xy|||||||||||||||||||__|__|__|__| inicialPoint</p>
  * <p>|__|__||||__|__|__|__||||__|__|__|__| coordinate diagonal SubMatrix</p>
- * <p>|__|__||||||||||||||||XY|__|__|__|__| endPoint</p>
+ * <p>|__|__||||||||||||||||||XY|__|__|__|__| endPoint</p>
  *
  * @author Orlovich Artem
  * @version 1.0
@@ -238,8 +238,9 @@ public final class Libraries {
      * <p>If the reading occurs from the file, if there are illegal characters
      * or an empty string, the Exception NumberFormatException is thrown</p>
      *
-     * @param scan   is {@code java.util.Scanner}
-     * @param arrays is {@code List<int[]>}
+     * @param scan     is {@code java.util.Scanner}
+     * @param arrays   is {@code List int[] }
+     * @param readFile is true if reading matrix file
      * @throws NumberFormatException if read line are illegal characters
      *                               or an empty string
      */
@@ -271,7 +272,7 @@ public final class Libraries {
      * </p>
      *
      * @param scan is {@code java.util.Scanner;}
-     * @return int[][] is listToArray(List<int[]> list)
+     * @return int[][] is listToArray(List int[])
      * @throws IllegalArgumentException if file is not exist
      * @throws NumberFormatException    if in file is
      *                                  non-integer
@@ -308,7 +309,7 @@ public final class Libraries {
      * <p>Can throw an exception in the case of non-integer matrix values ​​and empty lines when calling the readLineMatrix</p>
      *
      * @param scan is {@code java.util.Scanner;}
-     * @return int[][] is listToArray(List<int[]> list)
+     * @return int[][] is listToArray(List int[])
      * @throws NumberFormatException if enter non-integer
      */
     public static int[][] scannerDigitToArray(Scanner scan) {
@@ -318,10 +319,10 @@ public final class Libraries {
     }
 
     /**
-     * <p>Private method for correctly connecting a collection
+     * <p> Private method for correctly connecting a collection
      * of integer arrays to the run working algorithm</p>
      *
-     * @param list<int[]> is array line of integers
+     * @param list is array line of integers
      * @return int[][] array of arrays integers (two-dimensional array)
      */
     private static int[][] listToArray(List<int[]> list) {
@@ -335,7 +336,7 @@ public final class Libraries {
     /**
      * <p>Displays information about subMatrix</p>
      *
-     * @param subMatrix
+     * @param subMatrix is instance SubMatrix
      */
     public static void outMessage(SubMatrix subMatrix) {
         if (subMatrix == null) {
